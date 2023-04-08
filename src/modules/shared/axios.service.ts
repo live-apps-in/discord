@@ -3,7 +3,7 @@ import { injectable } from 'inversify';
 
 export interface IAxiosConfig {
   method: string;
-  route: string;
+  url: string;
   body?: any;
 }
 
