@@ -4,27 +4,47 @@ import { TYPES } from '../../core/types.di';
 import { GuildService } from '../guild/service/guild.service';
 import { Guild } from '../guild/guild';
 import container from '../../core/inversify';
-import { WebSocketGateway } from '../websockets/sockets.provider';
+import { Client as DiscordJSClient, GatewayIntentBits } from 'discord.js';
+import { EventEmitter } from 'events';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
 
-export class Client {
+export class Client extends EventEmitter {
   public user: User;
   public guild: Guild;
   private options: ClientOptions;
-  private socket: any;
+  private discordClient: DiscordJSClient;
 
   constructor(options: ClientOptions) {
+    super();
     this.options = options;
     this.user = new User(this.options, userService);
     this.guild = new Guild(this.options, guildService);
-    this.socket = this.wsGateway(this.options);
-  }
+    this.discordClient = new DiscordJSClient({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMembers,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+        GatewayIntentBits.GuildMessageReactions,
+      ],
+    });
 
-  private async wsGateway(options: ClientOptions) {
-    new WebSocketGateway().connect(options);
+    /**Binding DiscordJS events to our LiveApps Discord events
+     * Need to set this up in a separate file
+     */
+    this.discordClient.on('messageCreate', (message) => {
+      this.emit('messageCreate', message);
+    });
+
+    this.discordClient.on('ready', () => {
+      this.emit('ready');
+    });
+  }
+  public async login(token: string): Promise<void> {
+    await this.discordClient.login(token);
   }
 }
 
