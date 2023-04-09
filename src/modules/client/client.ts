@@ -4,6 +4,7 @@ import { TYPES } from '../../core/types.di';
 import { GuildService } from '../guild/service/guild.service';
 import { Guild } from '../guild/guild';
 import container from '../../core/inversify';
+import { WebSocketGateway } from '../websockets/sockets.provider';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
@@ -13,11 +14,17 @@ export class Client {
   public user: User;
   public guild: Guild;
   private options: ClientOptions;
+  private socket: any;
 
   constructor(options: ClientOptions) {
     this.options = options;
     this.user = new User(this.options, userService);
     this.guild = new Guild(this.options, guildService);
+    this.socket = this.wsGateway(this.options);
+  }
+
+  private async wsGateway(options: ClientOptions) {
+    new WebSocketGateway().connect(options);
   }
 }
 
