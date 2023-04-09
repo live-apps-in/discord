@@ -8,4 +8,5 @@ export const TYPES = {
 
   /**Shared Service */
   AxiosService: Symbol.for('AxiosService'),
+  RedisService: Symbol.for('RedisService'),
 };

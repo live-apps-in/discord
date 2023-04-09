@@ -5,7 +5,7 @@ let client: Redis;
 export class RedisProvider {
   async validate(options: ClientOptions) {
     if (!options.sync) return;
-    this.connect(options);
+    await this.connect(options);
   }
 
   private async connect(options: ClientOptions) {
@@ -28,6 +28,8 @@ export class RedisProvider {
       console.log('Error connecting to Redis: ' + err);
     });
   }
-}
 
-export default client;
+  public static getClient() {
+    return client;
+  }
+}

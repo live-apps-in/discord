@@ -8,9 +8,11 @@ import { Client as DiscordJSClient, GatewayIntentBits } from 'discord.js';
 import { EventEmitter } from 'events';
 import '../shared/redis/redis.provider';
 import { RedisProvider } from '../shared/redis/redis.provider';
+import { RedisService } from '../shared/redis/redis.service';
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
+const redisService = container.get<RedisService>(TYPES.RedisService);
 
 export class Client extends EventEmitter {
   public user: User;
@@ -23,7 +25,7 @@ export class Client extends EventEmitter {
     super();
     this.options = options;
     this.user = new User(this.options, userService);
-    this.guild = new Guild(this.options, guildService);
+    this.guild = new Guild(this.options, guildService, redisService);
     this.redis = new RedisProvider().validate(this.options);
     this.discordClient = new DiscordJSClient({
       intents: [
