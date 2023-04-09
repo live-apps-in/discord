@@ -6,7 +6,8 @@ import { Guild } from '../guild/guild';
 import container from '../../core/inversify';
 import { Client as DiscordJSClient, GatewayIntentBits } from 'discord.js';
 import { EventEmitter } from 'events';
-
+import '../shared/redis/redis.provider';
+import { RedisProvider } from '../shared/redis/redis.provider';
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -16,12 +17,14 @@ export class Client extends EventEmitter {
   public guild: Guild;
   private options: ClientOptions;
   private discordClient: DiscordJSClient;
+  private redis: any;
 
   constructor(options: ClientOptions) {
     super();
     this.options = options;
     this.user = new User(this.options, userService);
     this.guild = new Guild(this.options, guildService);
+    this.redis = new RedisProvider().validate(this.options);
     this.discordClient = new DiscordJSClient({
       intents: [
         GatewayIntentBits.Guilds,
@@ -50,11 +53,14 @@ export class Client extends EventEmitter {
 
 export interface ClientOptions {
   token: string;
-  sync: ISync;
+  sync: boolean;
+  logs: boolean;
+  redisOptions?: IRedisOptions;
 }
 
-interface ISync {
-  redisHost: string;
-  redisPass?: string;
-  redisDb: number;
+interface IRedisOptions {
+  host: string;
+  port: number;
+  db: number;
+  pass?: string;
 }
