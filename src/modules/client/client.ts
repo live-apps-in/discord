@@ -1,11 +1,9 @@
-import 'reflect-metadata';
-import { ClientOptions } from '@live-apps-in/discord';
 import { User } from '../users/user';
 import { UserService } from '../users/service/user.service';
 import { TYPES } from '../../core/types.di';
-import container from '../../core/inversify';
 import { GuildService } from '../guild/service/guild.service';
 import { Guild } from '../guild/guild';
+import container from '../../core/inversify';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
@@ -21,4 +19,15 @@ export class Client {
     this.user = new User(this.options, userService);
     this.guild = new Guild(this.options, guildService);
   }
+}
+
+export interface ClientOptions {
+  token: string;
+  sync: ISync;
+}
+
+interface ISync {
+  redisHost: string;
+  redisPass?: string;
+  redisDb: number;
 }

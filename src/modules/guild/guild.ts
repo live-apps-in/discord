@@ -1,7 +1,7 @@
-import { ClientOptions } from '@live-apps-in/discord';
 import { inject } from 'inversify';
 import { TYPES } from '../../core/types.di';
 import { GuildService } from './service/guild.service';
+import { ClientOptions } from '../client/client';
 
 export class Guild {
   constructor(

@@ -4,9 +4,7 @@
     "module": "CommonJS",
     "lib": ["es2015", "es2016"],
     "declaration": true,
-    "allowJs": true,
     "sourceMap": true,
-    "rootDir": "./src",
     "outDir": "./dist",
     "removeComments": true,
     "strict": false,
@@ -22,6 +20,6 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "exclude": ["node_modules"],
-  "include": ["./src/**/*.tsx", "./src/**/*.ts"]
+  "exclude": ["node_modules", "dist"],
+  "include": ["./src/**/*.ts"],
 }

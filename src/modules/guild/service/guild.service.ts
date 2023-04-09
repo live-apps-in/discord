@@ -1,8 +1,8 @@
-import { ClientOptions } from '@live-apps-in/discord';
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../core/types.di';
 import { GuildAPI } from '../../../api/discord/guild';
 import { AxiosService } from '../../shared/axios.service';
+import { ClientOptions } from '../../client/client';
 
 @injectable()
 export class GuildService {
