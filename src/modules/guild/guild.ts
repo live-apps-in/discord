@@ -1,9 +1,11 @@
-import { inject } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { TYPES } from '../../core/types.di';
 import { GuildService } from './service/guild.service';
 import { ClientOptions } from '../client/client';
 import { RedisService } from '../shared/redis/redis.service';
+import { options } from '../shared/interface/options.interface';
 
+@injectable()
 export class Guild {
   private cachedGuildIds = new Set<string>();
   private cachedGuildData = new Map<string, any>();
@@ -14,9 +16,11 @@ export class Guild {
     @inject(TYPES.RedisService) private readonly redisService: RedisService,
   ) {}
 
-  async fetch(guildId: string) {
+  async fetch(guildId: string, options?: options) {
+    const ignoreCache = options?.ignoreCache;
+
     ///Redis Cache
-    if (this.options.sync) {
+    if (this.options.sync && !ignoreCache) {
       const redisCache = await this.redisService.get(`cache:${guildId}`);
       if (redisCache) {
         console.log('redis cache');
@@ -25,7 +29,11 @@ export class Guild {
     }
 
     ///App memory cache
-    if (!this.options.sync && this.cachedGuildIds.has(guildId)) {
+    if (
+      !this.options.sync &&
+      !ignoreCache &&
+      this.cachedGuildIds.has(guildId)
+    ) {
       console.log('App cache');
       return this.cachedGuildData.get(guildId);
     }

@@ -4,28 +4,45 @@ import { TYPES } from '../../core/types.di';
 import { GuildService } from '../guild/service/guild.service';
 import { Guild } from '../guild/guild';
 import container from '../../core/inversify';
-import { Client as DiscordJSClient, GatewayIntentBits } from 'discord.js';
+import {
+  Client as DiscordJSClient,
+  Guild as IGuild,
+  GatewayIntentBits,
+} from 'discord.js';
 import { EventEmitter } from 'events';
 import '../shared/redis/redis.provider';
 import { RedisProvider } from '../shared/redis/redis.provider';
 import { RedisService } from '../shared/redis/redis.service';
+import { EventsHandler } from '../events/events.handlers';
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
 
 export class Client extends EventEmitter {
+  /**Exposed to users */
   public user: User;
   public guild: Guild;
+
+  /**App config */
   private options: ClientOptions;
   private discordClient: DiscordJSClient;
   private redis: any;
 
+  /**Services and internal Imports */
+  // private eventsHandler: EventsHandler;
+
   constructor(options: ClientOptions) {
     super();
+    /**Public */
     this.options = options;
     this.user = new User(this.options, userService);
     this.guild = new Guild(this.options, guildService, redisService);
+
+    /**Module reference */
+    // this.eventsHandler = container.get<EventsHandler>(TYPES.EventsHandler);
+
+    /**App config */
     this.redis = new RedisProvider().validate(this.options);
     this.discordClient = new DiscordJSClient({
       intents: [
@@ -36,6 +53,7 @@ export class Client extends EventEmitter {
         GatewayIntentBits.GuildMessageReactions,
       ],
     });
+    this.discordClient.login(this.options.token);
 
     /**Binding DiscordJS events to our LiveApps Discord events
      * Need to set this up in a separate file
@@ -47,9 +65,10 @@ export class Client extends EventEmitter {
     this.discordClient.on('ready', () => {
       this.emit('ready');
     });
-  }
-  public async login(token: string): Promise<void> {
-    await this.discordClient.login(token);
+
+    this.discordClient.on('guildUpdate', (undefined, newGuild: IGuild) => {
+      this.guild.fetch(newGuild.id, { ignoreCache: true });
+    });
   }
 }
 
