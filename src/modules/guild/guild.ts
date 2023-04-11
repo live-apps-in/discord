@@ -1,10 +1,10 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../core/types.di';
 import { GuildService } from './service/guild.service';
-import { ClientOptions } from '../client/client';
 import { RedisService } from '../shared/redis/redis.service';
 import { options } from '../../shared/interface/options.interface';
 import { configStore } from '../../shared/store/config.store';
+import { ClientOptions } from '../client/interface/client.interface';
 
 @injectable()
 export class Guild {

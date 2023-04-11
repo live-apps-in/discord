@@ -2,7 +2,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../core/types.di';
 import { GuildAPI } from '../../../api/discord/guild';
 import { AxiosService } from '../../shared/axios.service';
-import { ClientOptions } from '../../client/client';
+import { ClientOptions } from '../../client/interface/client.interface';
 
 @injectable()
 export class GuildService {

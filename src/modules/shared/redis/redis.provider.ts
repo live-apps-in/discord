@@ -1,5 +1,5 @@
 import { Redis } from 'ioredis';
-import { ClientOptions } from '../../client/client';
+import { ClientOptions } from '../../client/interface/client.interface';
 let client: Redis;
 
 export class RedisProvider {
