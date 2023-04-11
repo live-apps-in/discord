@@ -3,15 +3,15 @@ import { TYPES } from '../../core/types.di';
 import { GuildService } from './service/guild.service';
 import { ClientOptions } from '../client/client';
 import { RedisService } from '../shared/redis/redis.service';
-import { options } from '../shared/interface/options.interface';
+import { options } from '../../shared/interface/options.interface';
+import { configStore } from '../../shared/store/config.store';
 
 @injectable()
 export class Guild {
   private cachedGuildIds = new Set<string>();
   private cachedGuildData = new Map<string, any>();
-
+  private options: ClientOptions = configStore.clientOptions;
   constructor(
-    private options: ClientOptions,
     @inject(TYPES.GuildService) private readonly guildService: GuildService,
     @inject(TYPES.RedisService) private readonly redisService: RedisService,
   ) {}

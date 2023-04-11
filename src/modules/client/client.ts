@@ -14,6 +14,7 @@ import '../shared/redis/redis.provider';
 import { RedisProvider } from '../shared/redis/redis.provider';
 import { RedisService } from '../shared/redis/redis.service';
 import { EventsHandler } from '../events/events.handlers';
+import { configStore } from '../../shared/store/config.store';
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -30,17 +31,18 @@ export class Client extends EventEmitter {
   private redis: any;
 
   /**Services and internal Imports */
-  // private eventsHandler: EventsHandler;
+  private eventsHandler: EventsHandler;
 
   constructor(options: ClientOptions) {
     super();
     /**Public */
     this.options = options;
+    configStore.clientOptions = options; //Assign client options to config store (workaround T_T)
     this.user = new User(this.options, userService);
-    this.guild = new Guild(this.options, guildService, redisService);
+    this.guild = new Guild(guildService, redisService);
 
     /**Module reference */
-    // this.eventsHandler = container.get<EventsHandler>(TYPES.EventsHandler);
+    this.eventsHandler = container.get<EventsHandler>(TYPES.EventsHandler);
 
     /**App config */
     this.redis = new RedisProvider().validate(this.options);
@@ -67,7 +69,7 @@ export class Client extends EventEmitter {
     });
 
     this.discordClient.on('guildUpdate', (undefined, newGuild: IGuild) => {
-      this.guild.fetch(newGuild.id, { ignoreCache: true });
+      this.eventsHandler.guildUpdate(newGuild.id);
     });
   }
 }
