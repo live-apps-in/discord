@@ -4,12 +4,18 @@ import { TYPES } from '../../core/types.di';
 import { EventsHandler } from '../events/events.handlers';
 import container from '../../core/inversify';
 import { ClientOptions } from '../client/interface/client.interface';
+import { RedisService } from '../shared/redis/redis.service';
+import { inject } from 'inversify';
 
 export class SocketClient {
   private discordClient: Client;
   private eventsHandler: EventsHandler;
 
-  constructor(options: ClientOptions, emitter: EventEmitter) {
+  constructor(
+    options: ClientOptions,
+    emitter: EventEmitter,
+    @inject(TYPES.RedisService) private readonly redisService: RedisService,
+  ) {
     /**Binding Services */
     this.eventsHandler = container.get<EventsHandler>(TYPES.EventsHandler);
 
@@ -38,7 +44,13 @@ export class SocketClient {
     });
 
     /**Messages */
-    this.discordClient.on('messageCreate', (message) => {
+    this.discordClient.on('messageCreate', async (message) => {
+      const eventId = `discord-events:${message.id}`;
+
+      const hasEventProcessed = await this.redisService.exists(eventId);
+      if (hasEventProcessed) return;
+
+      this.redisService.set(eventId, 'ok');
       emitter.emit('messageCreate', message);
     });
 

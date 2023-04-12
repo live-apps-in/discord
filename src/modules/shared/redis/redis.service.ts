@@ -17,6 +17,11 @@ export class RedisService {
     return client.get(key);
   }
 
+  async exists(key: string) {
+    const client = await this.client();
+    return client.exists(key);
+  }
+
   async delete(key: string) {
     const client = await this.client();
     client.del(key);

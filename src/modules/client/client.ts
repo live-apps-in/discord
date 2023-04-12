@@ -35,6 +35,6 @@ export class Client extends EventEmitter {
 
     /**App config */
     new RedisProvider().validate(this.options);
-    new SocketClient(options, this);
+    new SocketClient(options, this, redisService);
   }
 }
