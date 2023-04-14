@@ -6,7 +6,6 @@ import container from '../../core/inversify';
 import { ClientOptions } from '../client/interface/client.interface';
 import { RedisService } from '../shared/redis/redis.service';
 import { inject } from 'inversify';
-
 export class SocketClient {
   private discordClient: Client;
   private eventsHandler: EventsHandler;
@@ -34,7 +33,10 @@ export class SocketClient {
      * @event
      * @param {Client<true>} client - Discord Client
      */
-    this.discordClient.on('ready', (client) => {
+    this.discordClient.on('ready', async (client) => {
+      const eventId = `discord-events:app_bootstrap`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('ready', client as Client<true>);
     });
 
@@ -46,45 +48,59 @@ export class SocketClient {
     /**Messages */
     this.discordClient.on('messageCreate', async (message) => {
       const eventId = `discord-events:${message.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
 
-      const hasEventProcessed = await this.redisService.exists(eventId);
-      if (hasEventProcessed) return;
-
-      this.redisService.set(eventId, 'ok');
       emitter.emit('messageCreate', message);
     });
 
-    this.discordClient.on('messageUpdate', (oldMessage, newMessage) => {
+    this.discordClient.on('messageUpdate', async (oldMessage, newMessage) => {
+      const eventId = `discord-events:${newMessage.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('messageUpdate', oldMessage, newMessage);
     });
 
-    this.discordClient.on('messageDelete', (message) => {
+    this.discordClient.on('messageDelete', async (message) => {
+      const eventId = `discord-events:${message.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('messageDelete', message);
     });
 
-    this.discordClient.on('messageDeleteBulk', (message, channel) => {
-      emitter.emit('messageDeleteBulk', message, channel);
-    });
-
     /**Guild */
-    this.discordClient.on('guildCreate', (guild) => {
+    this.discordClient.on('guildCreate', async (guild) => {
+      const eventId = `discord-events:${guild.id}:create`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('guildCreate', guild);
     });
 
-    this.discordClient.on('guildUpdate', (oldGuild, newGuild) => {
+    this.discordClient.on('guildUpdate', async (oldGuild, newGuild) => {
+      const eventId = `discord-events:${newGuild.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('guildUpdate', oldGuild as Guild, newGuild as Guild);
       this.eventsHandler.guildUpdate(newGuild.id); //update cache
     });
 
-    this.discordClient.on('guildDelete', (guild) => {
+    this.discordClient.on('guildDelete', async (guild) => {
+      const eventId = `discord-events:${guild.id}:delete`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('guildDelete', guild);
     });
 
-    this.discordClient.on('guildMemberAdd', (member) => {
+    this.discordClient.on('guildMemberAdd', async (member) => {
+      const eventId = `discord-events:${member.id}:${member.guild.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('guildMemberAdd', member);
     });
 
-    this.discordClient.on('guildMemberRemove', (member) => {
+    this.discordClient.on('guildMemberRemove', async (member) => {
+      const eventId = `discord-events:${member.id}:${member.guild.id}`;
+      if (await this.redisService.hasEventProcessed(eventId)) return;
+
       emitter.emit('guildMemberRemove', member);
     });
 

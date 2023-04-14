@@ -1,5 +1,7 @@
 import { injectable } from 'inversify';
 import { RedisProvider } from './redis.provider';
+import { configStore } from '../../../shared/store/config.store';
+import { ClientOptions } from '../../client/interface/client.interface';
 
 @injectable()
 export class RedisService {
@@ -10,6 +12,11 @@ export class RedisService {
   async set(key: string, value: string) {
     const client = await this.client();
     client.set(key, value);
+  }
+
+  async setWithExpiry(key: string, value: string, expiresAt: number) {
+    const client = await this.client();
+    client.set(key, value, 'EX', expiresAt);
   }
 
   async get(key: string) {
@@ -25,5 +32,20 @@ export class RedisService {
   async delete(key: string) {
     const client = await this.client();
     client.del(key);
+  }
+
+  /**De-duplication */
+  async hasEventProcessed(eventId: string): Promise<boolean> {
+    /**If sync is off assuming app is not scaled and allows events
+     * This also prevents app from crash if Redis not configured
+     */
+    const { sync }: ClientOptions = configStore.clientOptions;
+    if (!sync) return false;
+
+    const hasEventProcessed = await this.exists(eventId);
+    if (hasEventProcessed) return true;
+
+    this.setWithExpiry(eventId, 'ok', 2);
+    return false;
   }
 }
