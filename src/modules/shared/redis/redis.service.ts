@@ -34,7 +34,9 @@ export class RedisService {
     client.del(key);
   }
 
-  /**De-duplication */
+  /**De-duplication
+   * Lock Mechanism
+   */
   async hasEventProcessed(eventId: string): Promise<boolean> {
     /**If sync is off assuming app is not scaled and allows events
      * This also prevents app from crash if Redis not configured
@@ -42,10 +44,9 @@ export class RedisService {
     const { sync }: ClientOptions = configStore.clientOptions;
     if (!sync) return false;
 
-    const hasEventProcessed = await this.exists(eventId);
-    if (hasEventProcessed) return true;
+    const client = await this.client();
+    if (await client.set(eventId, 'inProgress', 'EX', 2, 'NX')) return false;
 
-    this.setWithExpiry(eventId, 'ok', 2);
-    return false;
+    return true;
   }
 }

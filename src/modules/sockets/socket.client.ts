@@ -34,9 +34,6 @@ export class SocketClient {
      * @param {Client<true>} client - Discord Client
      */
     this.discordClient.on('ready', async (client) => {
-      const eventId = `discord-events:app_bootstrap`;
-      if (await this.redisService.hasEventProcessed(eventId)) return;
-
       emitter.emit('ready', client as Client<true>);
     });
 
