@@ -13,4 +13,5 @@ export const TYPES = {
   AxiosService: Symbol.for('AxiosService'),
   RedisService: Symbol.for('RedisService'),
   EventsHandler: Symbol.for('EventsHandler'),
+  DiscordRateLimiter: Symbol.for('DiscordRateLimiter'),
 };

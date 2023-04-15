@@ -1,5 +1,6 @@
 import { injectable } from 'inversify';
 import { DiscordBaseAPI } from './api.discord';
+import { IDiscordAxiosConfig } from '../../modules/shared/axios.service';
 
 @injectable()
 export class GuildAPI extends DiscordBaseAPI {
@@ -12,6 +13,7 @@ export class GuildAPI extends DiscordBaseAPI {
         Authorization: this.authorization(token),
         ...this.headers,
       },
-    };
+      endpointType: `getGuild:{${guildId}}`,
+    } as IDiscordAxiosConfig;
   }
 }

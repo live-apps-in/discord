@@ -1,5 +1,7 @@
 import axios from 'axios';
-import { injectable } from 'inversify';
+import { inject, injectable } from 'inversify';
+import { TYPES } from '../../core/types.di';
+import { DiscordRateLimiter } from './rate_limiter';
 
 export interface IAxiosConfig {
   method: string;
@@ -7,8 +9,17 @@ export interface IAxiosConfig {
   body?: any;
 }
 
+export interface IDiscordAxiosConfig extends IAxiosConfig {
+  endpointType: string;
+}
+
 @injectable()
 export class AxiosService {
+  constructor(
+    @inject(TYPES.DiscordRateLimiter)
+    private readonly discordRateLimiter: DiscordRateLimiter,
+  ) {}
+
   async call(axiosConfig: IAxiosConfig) {
     let resData: any;
     await axios(axiosConfig)
@@ -19,5 +30,9 @@ export class AxiosService {
         console.log(err.message);
       });
     return resData;
+  }
+
+  async discordRequest(axiosConfig: IDiscordAxiosConfig) {
+    return this.discordRateLimiter.executeRequest(axiosConfig);
   }
 }

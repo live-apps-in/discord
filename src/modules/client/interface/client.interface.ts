@@ -1,7 +1,7 @@
 export interface ClientOptions {
   token: string;
   sync: boolean;
-  logs: boolean;
+  logs?: boolean;
   redisOptions?: IRedisOptions;
 }
 

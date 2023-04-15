@@ -13,6 +13,6 @@ export class GuildService {
 
   async getGuildById(guildId: string, options: ClientOptions) {
     const apiConfig = this.guildAPI.getGuild(guildId, options.token);
-    return this.axiosService.call(apiConfig);
+    return this.axiosService.discordRequest(apiConfig);
   }
 }

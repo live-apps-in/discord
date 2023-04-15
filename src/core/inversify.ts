@@ -8,6 +8,7 @@ import { GuildService } from '../modules/guild/service/guild.service';
 import { RedisService } from '../modules/shared/redis/redis.service';
 import { Guild } from '../modules/guild/guild';
 import { EventsHandler } from '../modules/events/events.handlers';
+import { DiscordRateLimiter } from '../modules/shared/rate_limiter';
 
 const container = new Container();
 /**Core Service */
@@ -24,5 +25,8 @@ container.bind<GuildAPI>(TYPES.GuildAPI).to(GuildAPI);
 container.bind<AxiosService>(TYPES.AxiosService).to(AxiosService);
 container.bind<RedisService>(TYPES.RedisService).to(RedisService);
 container.bind<EventsHandler>(TYPES.EventsHandler).to(EventsHandler);
+container
+  .bind<DiscordRateLimiter>(TYPES.DiscordRateLimiter)
+  .to(DiscordRateLimiter);
 
 export default container;
