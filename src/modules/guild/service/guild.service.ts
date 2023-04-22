@@ -2,7 +2,6 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../core/types.di';
 import { GuildAPI } from '../../../api/discord/guild';
 import { AxiosService } from '../../shared/axios.service';
-import { ClientOptions } from '../../client/interface/client.interface';
 
 @injectable()
 export class GuildService {
@@ -11,8 +10,8 @@ export class GuildService {
     @inject(TYPES.AxiosService) private readonly axiosService: AxiosService,
   ) {}
 
-  async getGuildById(guildId: string, options: ClientOptions) {
-    const apiConfig = this.guildAPI.getGuild(guildId, options.token);
+  async getGuildById(guildId: string) {
+    const apiConfig = this.guildAPI.getGuild(guildId);
     return this.axiosService.discordRequest(apiConfig);
   }
 }

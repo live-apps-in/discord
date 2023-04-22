@@ -6,7 +6,7 @@ import { DiscordRateLimiter } from './rate_limiter';
 export interface IAxiosConfig {
   method: string;
   url: string;
-  body?: any;
+  data?: any;
 }
 
 export interface IDiscordAxiosConfig extends IAxiosConfig {

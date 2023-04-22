@@ -9,6 +9,8 @@ import { RedisService } from '../modules/shared/redis/redis.service';
 import { Guild } from '../modules/guild/guild';
 import { EventsHandler } from '../modules/events/events.handlers';
 import { DiscordRateLimiter } from '../modules/shared/rate_limiter';
+import { ChannelService } from '../modules/channel/service/channel.service';
+import { ChannelAPI } from '../api/discord/channel';
 
 const container = new Container();
 /**Core Service */
@@ -17,9 +19,11 @@ container.bind<Guild>(TYPES.Guild).to(Guild);
 /**App Service */
 container.bind<UserService>(TYPES.UserService).to(UserService);
 container.bind<GuildService>(TYPES.GuildService).to(GuildService);
+container.bind<ChannelService>(TYPES.ChannelService).to(ChannelService);
 
 /**API Service */
 container.bind<GuildAPI>(TYPES.GuildAPI).to(GuildAPI);
+container.bind<ChannelAPI>(TYPES.ChannelAPI).to(ChannelAPI);
 
 /**Shared Service */
 container.bind<AxiosService>(TYPES.AxiosService).to(AxiosService);

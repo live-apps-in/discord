@@ -38,7 +38,7 @@ export class Guild {
       return this.cachedGuildData.get(guildId);
     }
 
-    const guild = await this.guildService.getGuildById(guildId, this.options);
+    const guild = await this.guildService.getGuildById(guildId);
 
     if (this.options.sync) {
       await this.redisService.set(`cache:${guildId}`, JSON.stringify(guild));
