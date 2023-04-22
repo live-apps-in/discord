@@ -28,9 +28,7 @@ export class DiscordRateLimiter {
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.response);
-
-      throw error;
+      console.log(err.response.data);
     } finally {
       this.releaseLock(endpointType);
     }

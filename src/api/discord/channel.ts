@@ -32,4 +32,17 @@ export class ChannelAPI extends DiscordBaseAPI {
       endpointType: `channelSendMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
+
+  ///Reply to a message with plain message
+  deleteMessage(channelId: string, messageId: string) {
+    return {
+      method: 'DELETE',
+      url: `${this.DISCORD_API}/channels/${channelId}/messages/${messageId}`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      endpointType: `channelSendMessage:{${channelId}}`,
+    } as IDiscordAxiosConfig;
+  }
 }
