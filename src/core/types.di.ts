@@ -1,3 +1,4 @@
+/**Ioc types for InversifyJS */
 export const TYPES = {
   /**Core Modules */
   Guild: Symbol.for('Guild'),

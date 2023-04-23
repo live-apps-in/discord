@@ -17,6 +17,7 @@ import { ChannelService } from '../modules/channel/service/channel.service';
 import { ChannelAPI } from '../api/discord/channel';
 
 const container = new Container();
+
 /**Core Service */
 container.bind<Guild>(TYPES.Guild).to(Guild);
 

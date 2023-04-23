@@ -11,6 +11,7 @@ export class Guild {
   private cachedGuildIds = new Set<string>();
   private cachedGuildData = new Map<string, any>();
   private options: ClientOptions = configStore.clientOptions;
+
   constructor(
     @inject(TYPES.GuildService) private readonly guildService: GuildService,
     @inject(TYPES.RedisService) private readonly redisService: RedisService,
@@ -23,7 +24,6 @@ export class Guild {
     if (this.options.sync && !ignoreCache) {
       const redisCache = await this.redisService.get(`cache:${guildId}`);
       if (redisCache) {
-        console.log('redis cache');
         return JSON.parse(redisCache);
       }
     }
@@ -34,7 +34,6 @@ export class Guild {
       !ignoreCache &&
       this.cachedGuildIds.has(guildId)
     ) {
-      console.log('App cache');
       return this.cachedGuildData.get(guildId);
     }
 
@@ -47,7 +46,6 @@ export class Guild {
       this.cachedGuildData.set(guildId, guild);
     }
 
-    console.log('API fetch');
     return guild;
   }
 }

@@ -27,7 +27,7 @@ export class RolesAPI extends DiscordBaseAPI {
         Authorization: this.authorization(configStore.clientOptions.token),
         ...this.headers,
       },
-      endpointType: `guildSetRole:{${guildId}}`,
+      endpointType: `guildRemoveRole:{${guildId}}`,
     } as IDiscordAxiosConfig;
   }
 }

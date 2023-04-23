@@ -44,7 +44,7 @@ export class MessageAPI extends DiscordBaseAPI {
         ...this.headers,
       },
       data: payload,
-      endpointType: `channelReplyMessage:{${channelId}}`,
+      endpointType: `createThread:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 
