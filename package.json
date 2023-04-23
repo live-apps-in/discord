@@ -1,5 +1,5 @@
 {
-  "name": "@live-apps-in/discord",
+  "name": "@live-apps/discord",
   "version": "1.0.0",
   "description": "Discord Client with shared cache, rate-limiting and de-duplication mechanism",
   "author": "Jaga <jagadheesh6@gmail.com>",
