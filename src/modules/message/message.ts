@@ -2,6 +2,7 @@ import { inject, injectable } from 'inversify';
 import { TYPES } from '../../core/types.di';
 import { MessageService } from './service/message.service';
 import { DiscordEmbeds } from '../../shared/interface/embed.interface';
+import { ICreateThread } from './interface/messages.interface';
 
 @injectable()
 export class Message {
@@ -23,6 +24,19 @@ export class Message {
   /**Reply to message with plain message */
   async reply(channelId: string, messageId: string, message: string) {
     return this.messageService.replyMessage(channelId, messageId, message);
+  }
+
+  /**Create Thread from a existing message */
+  async createThread(
+    channelId: string,
+    messageId: string,
+    threadOptions: ICreateThread,
+  ) {
+    return this.messageService.createThread(
+      channelId,
+      messageId,
+      threadOptions,
+    );
   }
 
   /**Edit Embed */

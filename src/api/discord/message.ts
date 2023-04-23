@@ -2,6 +2,7 @@ import { injectable } from 'inversify';
 import { DiscordBaseAPI } from './api.discord';
 import { IDiscordAxiosConfig } from '../../modules/shared/axios.service';
 import { configStore } from '../../shared/store/config.store';
+import { ICreateThread } from '../../modules/message/interface/messages.interface';
 
 @injectable()
 export class MessageAPI extends DiscordBaseAPI {
@@ -29,6 +30,20 @@ export class MessageAPI extends DiscordBaseAPI {
         ...this.headers,
       },
       data: body,
+      endpointType: `channelReplyMessage:{${channelId}}`,
+    } as IDiscordAxiosConfig;
+  }
+
+  ///Create message from thread
+  createThread(channelId: string, messageId: string, payload: ICreateThread) {
+    return {
+      method: 'POST',
+      url: `${this.DISCORD_API}/channels/${channelId}/messages/${messageId}/threads`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      data: payload,
       endpointType: `channelReplyMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }

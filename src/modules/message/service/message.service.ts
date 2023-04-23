@@ -3,6 +3,7 @@ import { TYPES } from '../../../core/types.di';
 import { MessageAPI } from '../../../api/discord/message';
 import { AxiosService } from '../../shared/axios.service';
 import { DiscordEmbeds } from '../../../shared/interface/embed.interface';
+import { ICreateThread } from '../interface/messages.interface';
 
 @injectable()
 export class MessageService {
@@ -33,6 +34,19 @@ export class MessageService {
         message_id: messageId,
       },
     });
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
+  async createThread(
+    channelId: string,
+    messageId: string,
+    payload: ICreateThread,
+  ) {
+    const apiConfig = this.messageAPI.createThread(
+      channelId,
+      messageId,
+      payload,
+    );
     return this.axiosService.discordRequest(apiConfig);
   }
 
