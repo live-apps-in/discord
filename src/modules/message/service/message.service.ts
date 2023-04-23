@@ -48,6 +48,21 @@ export class MessageService {
     return this.axiosService.discordRequest(apiConfig);
   }
 
+  /**REact to a message */
+  async messageReact(channelId: string, messageId: string, reaction: string) {
+    //Check and decode emoji if not already done
+    if (reaction === decodeURIComponent(reaction)) {
+      reaction = encodeURIComponent(reaction);
+    }
+
+    const apiConfig = this.messageAPI.messageReact(
+      channelId,
+      messageId,
+      reaction,
+    );
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
   /**Message Delete */
   async deleteMessage(channelId: string, messageId: string) {
     const apiConfig = this.messageAPI.deleteMessage(channelId, messageId);

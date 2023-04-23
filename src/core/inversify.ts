@@ -9,7 +9,7 @@ import { RedisService } from '../modules/shared/redis/redis.service';
 import { Guild } from '../modules/guild/guild';
 import { EventsHandler } from '../modules/events/events.handlers';
 import { DiscordRateLimiter } from '../modules/shared/rate_limiter';
-import { MessageService } from '../modules/message/service/channel.service';
+import { MessageService } from '../modules/message/service/message.service';
 import { MessageAPI } from '../api/discord/message';
 
 const container = new Container();

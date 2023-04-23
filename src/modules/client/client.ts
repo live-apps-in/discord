@@ -12,7 +12,7 @@ import { configStore } from '../../shared/store/config.store';
 import { SocketClient } from '../sockets/socket.client';
 import { ClientOptions } from './interface/client.interface';
 import { Message } from '../message/message';
-import { MessageService } from '../message/service/channel.service';
+import { MessageService } from '../message/service/message.service';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);

@@ -1,6 +1,6 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../core/types.di';
-import { MessageService } from './service/channel.service';
+import { MessageService } from './service/message.service';
 import { DiscordEmbeds } from '../../shared/interface/embed.interface';
 
 @injectable()
@@ -32,6 +32,11 @@ export class Message {
     embeds: DiscordEmbeds[],
   ) {
     return this.messageService.editEmbed(channelId, messageId, embeds);
+  }
+
+  /**React to a message */
+  async react(channelId: string, messageId: string, reaction: string) {
+    return this.messageService.messageReact(channelId, messageId, reaction);
   }
 
   /**Delete message */
