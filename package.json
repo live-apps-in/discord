@@ -1,6 +1,6 @@
 {
   "name": "@live-apps/discord",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Discord Client with shared cache, rate-limiting and de-duplication mechanism",
   "author": "Jaga <jagadheesh6@gmail.com>",
   "main": "./dist/index.js",
@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "nodemon src/index.ts",
     "build:local": "tsc && npm pack",
+    "publish": "tsc && npm publish --access=public",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix"
   },
   "repository": {
