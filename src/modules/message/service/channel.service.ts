@@ -1,32 +1,33 @@
 import { inject, injectable } from 'inversify';
 import { TYPES } from '../../../core/types.di';
-import { ChannelAPI } from '../../../api/discord/channel';
+import { MessageAPI } from '../../../api/discord/message';
 import { AxiosService } from '../../shared/axios.service';
 import { DiscordEmbeds } from '../../../shared/interface/embed.interface';
 
 @injectable()
-export class ChannelService {
+export class MessageService {
   constructor(
-    @inject(TYPES.ChannelAPI) private readonly channelAPI: ChannelAPI,
+    @inject(TYPES.MessageAPI) private readonly messageAPI: MessageAPI,
     @inject(TYPES.AxiosService) private readonly axiosService: AxiosService,
   ) {}
 
+  /**Message Create */
   async sendMessage(channelId: string, message: string) {
-    const apiConfig = this.channelAPI.sendMessage(channelId, {
+    const apiConfig = this.messageAPI.sendMessage(channelId, {
       content: message,
     });
     return this.axiosService.discordRequest(apiConfig);
   }
 
   async sendEmbed(channelId: string, embeds: DiscordEmbeds[]) {
-    const apiConfig = this.channelAPI.sendMessage(channelId, {
+    const apiConfig = this.messageAPI.sendMessage(channelId, {
       embeds,
     });
     return this.axiosService.discordRequest(apiConfig);
   }
 
   async replyMessage(channelId: string, messageId: string, message: string) {
-    const apiConfig = this.channelAPI.replyMessage(channelId, {
+    const apiConfig = this.messageAPI.replyMessage(channelId, {
       content: message,
       message_reference: {
         message_id: messageId,
@@ -35,8 +36,21 @@ export class ChannelService {
     return this.axiosService.discordRequest(apiConfig);
   }
 
+  /**Message Patch */
+  async editEmbed(
+    channelId: string,
+    messageId: string,
+    embeds: DiscordEmbeds[],
+  ) {
+    const apiConfig = this.messageAPI.editMessage(channelId, messageId, {
+      embeds,
+    });
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
+  /**Message Delete */
   async deleteMessage(channelId: string, messageId: string) {
-    const apiConfig = this.channelAPI.deleteMessage(channelId, messageId);
+    const apiConfig = this.messageAPI.deleteMessage(channelId, messageId);
     return this.axiosService.discordRequest(apiConfig);
   }
 }

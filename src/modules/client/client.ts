@@ -11,20 +11,20 @@ import { RedisService } from '../shared/redis/redis.service';
 import { configStore } from '../../shared/store/config.store';
 import { SocketClient } from '../sockets/socket.client';
 import { ClientOptions } from './interface/client.interface';
-import { Channel } from '../channel/channel';
-import { ChannelService } from '../channel/service/channel.service';
+import { Message } from '../message/message';
+import { MessageService } from '../message/service/channel.service';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
-const channelService = container.get<ChannelService>(TYPES.ChannelService);
+const channelService = container.get<MessageService>(TYPES.MessageService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
 
 export class Client extends EventEmitter {
   /**Exposed to users */
   public user: User;
   public guild: Guild;
-  public channel: Channel;
+  public message: Message;
 
   /**App config */
   private options: ClientOptions;
@@ -36,7 +36,7 @@ export class Client extends EventEmitter {
     configStore.clientOptions = options;
     this.user = new User(this.options, userService);
     this.guild = new Guild(guildService, redisService);
-    this.channel = new Channel(channelService);
+    this.message = new Message(channelService);
 
     /**App config */
     new RedisProvider().validate(this.options);

@@ -4,7 +4,7 @@ import { IDiscordAxiosConfig } from '../../modules/shared/axios.service';
 import { configStore } from '../../shared/store/config.store';
 
 @injectable()
-export class ChannelAPI extends DiscordBaseAPI {
+export class MessageAPI extends DiscordBaseAPI {
   ///Send Message to a channel
   sendMessage(channelId: string, body: any) {
     return {
@@ -33,7 +33,21 @@ export class ChannelAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
-  ///Reply to a message with plain message
+  ///Edit a message
+  editMessage(channelId: string, messageId: string, body: any) {
+    return {
+      method: 'PATCH',
+      url: `${this.DISCORD_API}/channels/${channelId}/messages/${messageId}`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      data: body,
+      endpointType: `channelSendMessage:{${channelId}}`,
+    } as IDiscordAxiosConfig;
+  }
+
+  ///Delete a message in a channel
   deleteMessage(channelId: string, messageId: string) {
     return {
       method: 'DELETE',
