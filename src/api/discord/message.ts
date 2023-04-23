@@ -29,7 +29,7 @@ export class MessageAPI extends DiscordBaseAPI {
         ...this.headers,
       },
       data: body,
-      endpointType: `channelSendMessage:{${channelId}}`,
+      endpointType: `channelReplyMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 
@@ -43,7 +43,7 @@ export class MessageAPI extends DiscordBaseAPI {
         ...this.headers,
       },
       data: body,
-      endpointType: `channelSendMessage:{${channelId}}`,
+      endpointType: `channelEditMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 
@@ -59,7 +59,7 @@ export class MessageAPI extends DiscordBaseAPI {
       data: {
         emoji: reaction,
       },
-      endpointType: `channelSendMessage:{${channelId}}`,
+      endpointType: `channelReactMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 
@@ -72,7 +72,7 @@ export class MessageAPI extends DiscordBaseAPI {
         Authorization: this.authorization(configStore.clientOptions.token),
         ...this.headers,
       },
-      endpointType: `channelSendMessage:{${channelId}}`,
+      endpointType: `channelDeleteMessage:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 }

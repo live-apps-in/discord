@@ -11,6 +11,8 @@ import { EventsHandler } from '../modules/events/events.handlers';
 import { DiscordRateLimiter } from '../modules/shared/rate_limiter';
 import { MessageService } from '../modules/message/service/message.service';
 import { MessageAPI } from '../api/discord/message';
+import { RolesService } from '../modules/roles/service/roles.service';
+import { RolesAPI } from '../api/discord/role.api';
 
 const container = new Container();
 /**Core Service */
@@ -19,11 +21,13 @@ container.bind<Guild>(TYPES.Guild).to(Guild);
 /**App Service */
 container.bind<UserService>(TYPES.UserService).to(UserService);
 container.bind<GuildService>(TYPES.GuildService).to(GuildService);
+container.bind<RolesService>(TYPES.RolesService).to(RolesService);
 container.bind<MessageService>(TYPES.MessageService).to(MessageService);
 
 /**API Service */
 container.bind<GuildAPI>(TYPES.GuildAPI).to(GuildAPI);
 container.bind<MessageAPI>(TYPES.MessageAPI).to(MessageAPI);
+container.bind<RolesAPI>(TYPES.RolesAPI).to(RolesAPI);
 
 /**Shared Service */
 container.bind<AxiosService>(TYPES.AxiosService).to(AxiosService);

@@ -13,11 +13,14 @@ import { SocketClient } from '../sockets/socket.client';
 import { ClientOptions } from './interface/client.interface';
 import { Message } from '../message/message';
 import { MessageService } from '../message/service/message.service';
+import { Roles } from '../roles/roles';
+import { RolesService } from '../roles/service/roles.service';
 
 ///Service
 const userService = container.get<UserService>(TYPES.UserService);
 const guildService = container.get<GuildService>(TYPES.GuildService);
 const channelService = container.get<MessageService>(TYPES.MessageService);
+const rolesService = container.get<RolesService>(TYPES.RolesService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
 
 export class Client extends EventEmitter {
@@ -25,6 +28,7 @@ export class Client extends EventEmitter {
   public user: User;
   public guild: Guild;
   public message: Message;
+  public roles: Roles;
 
   /**App config */
   private options: ClientOptions;
@@ -37,6 +41,7 @@ export class Client extends EventEmitter {
     this.user = new User(this.options, userService);
     this.guild = new Guild(guildService, redisService);
     this.message = new Message(channelService);
+    this.roles = new Roles(rolesService);
 
     /**App config */
     new RedisProvider().validate(this.options);
