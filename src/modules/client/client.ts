@@ -17,6 +17,7 @@ import { Roles } from '../roles/roles';
 import { RolesService } from '../roles/service/roles.service';
 import { ChannelService } from '../channel/service/channel.service';
 import { Channel } from '../channel/channel';
+import { Bot } from '../bot/bot';
 
 ///Service
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -32,6 +33,7 @@ export class Client extends EventEmitter {
   public channel: Channel;
   public message: Message;
   public roles: Roles;
+  public bot: Bot;
   public user: User;
 
   /**App config */
@@ -46,6 +48,7 @@ export class Client extends EventEmitter {
     this.channel = new Channel(channelService);
     this.message = new Message(messageService);
     this.roles = new Roles(rolesService);
+    this.bot = new Bot();
     this.user = new User(this.options, userService);
 
     /**App config */
