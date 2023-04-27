@@ -15,6 +15,8 @@ import { RolesService } from '../modules/roles/service/roles.service';
 import { RolesAPI } from '../api/discord/role.api';
 import { ChannelService } from '../modules/channel/service/channel.service';
 import { ChannelAPI } from '../api/discord/channel';
+import { MemberService } from '../modules/member/service/member.service';
+import { MemberAPI } from '../api/discord/member';
 
 const container = new Container();
 
@@ -27,12 +29,14 @@ container.bind<ChannelService>(TYPES.ChannelService).to(ChannelService);
 container.bind<UserService>(TYPES.UserService).to(UserService);
 container.bind<RolesService>(TYPES.RolesService).to(RolesService);
 container.bind<MessageService>(TYPES.MessageService).to(MessageService);
+container.bind<MemberService>(TYPES.MemberService).to(MemberService);
 
 /**API Service */
 container.bind<GuildAPI>(TYPES.GuildAPI).to(GuildAPI);
 container.bind<ChannelAPI>(TYPES.ChannelAPI).to(ChannelAPI);
 container.bind<MessageAPI>(TYPES.MessageAPI).to(MessageAPI);
 container.bind<RolesAPI>(TYPES.RolesAPI).to(RolesAPI);
+container.bind<MemberAPI>(TYPES.MemberAPI).to(MemberAPI);
 
 /**Shared Service */
 container.bind<AxiosService>(TYPES.AxiosService).to(AxiosService);

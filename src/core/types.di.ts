@@ -5,6 +5,7 @@ export const TYPES = {
   Channel: Symbol.for('Channel'),
   Message: Symbol.for('Message'),
   Roles: Symbol.for('Roles'),
+  Member: Symbol.for('Member'),
 
   /**App Service */
   GuildService: Symbol.for('GuildService'),
@@ -12,12 +13,14 @@ export const TYPES = {
   MessageService: Symbol.for('MessageService'),
   RolesService: Symbol.for('RolesService'),
   UserService: Symbol.for('UserService'),
+  MemberService: Symbol.for('MemberService'),
 
   /**API service */
   GuildAPI: Symbol.for('GuildAPI'),
   ChannelAPI: Symbol.for('ChannelAPI'),
   MessageAPI: Symbol.for('MessageAPI'),
   RolesAPI: Symbol.for('RolesAPI'),
+  MemberAPI: Symbol.for('MemberAPI'),
 
   /**Shared Service */
   AxiosService: Symbol.for('AxiosService'),

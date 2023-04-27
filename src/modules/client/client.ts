@@ -1,5 +1,3 @@
-import { User } from '../users/user';
-import { UserService } from '../users/service/user.service';
 import { TYPES } from '../../core/types.di';
 import { GuildService } from '../guild/service/guild.service';
 import { Guild } from '../guild/guild';
@@ -18,23 +16,25 @@ import { RolesService } from '../roles/service/roles.service';
 import { ChannelService } from '../channel/service/channel.service';
 import { Channel } from '../channel/channel';
 import { Bot } from '../bot/bot';
+import { MemberService } from '../member/service/member.service';
+import { Member } from '../member/member';
 
 ///Service
 const guildService = container.get<GuildService>(TYPES.GuildService);
 const channelService = container.get<ChannelService>(TYPES.ChannelService);
 const messageService = container.get<MessageService>(TYPES.MessageService);
-const userService = container.get<UserService>(TYPES.UserService);
 const rolesService = container.get<RolesService>(TYPES.RolesService);
+const memberService = container.get<MemberService>(TYPES.MemberService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
 
 export class Client extends EventEmitter {
   /**Exposed to users */
   public guild: Guild;
   public channel: Channel;
+  public member: Member;
   public message: Message;
   public roles: Roles;
   public bot: Bot;
-  public user: User;
 
   /**App config */
   private options: ClientOptions;
@@ -46,10 +46,10 @@ export class Client extends EventEmitter {
     configStore.clientOptions = options;
     this.guild = new Guild(guildService, redisService);
     this.channel = new Channel(channelService);
+    this.member = new Member(memberService, redisService);
     this.message = new Message(messageService);
     this.roles = new Roles(rolesService);
     this.bot = new Bot();
-    this.user = new User(this.options, userService);
 
     /**App config */
     new RedisProvider().validate(this.options);
