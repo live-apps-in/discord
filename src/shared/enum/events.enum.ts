@@ -1,3 +1,7 @@
+/**
+ * List of allowed Discord Events
+ * @enum {string}
+ */
 export enum DiscordEvents {
   messageCreate = 'messageCreate',
   messageUpdate = 'messageUpdate',

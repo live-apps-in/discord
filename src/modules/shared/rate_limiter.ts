@@ -3,78 +3,79 @@ import { IDiscordAxiosConfig } from './axios.service';
 import axios, { AxiosError } from 'axios';
 
 interface RateLimit {
-  endpoint: string;
   limit: number;
   remaining: number;
   resetTimestamp: number;
+  resetAfter: number;
 }
 
 @injectable()
 export class DiscordRateLimiter {
   private rateLimits: Map<string, RateLimit> = new Map();
-  private queue: Map<string, Array<() => void>> = new Map();
 
   async executeRequest<T>(axiosConfig: IDiscordAxiosConfig): Promise<any> {
-    const { endpointType } = axiosConfig;
-
-    // Acquire the rate limit lock
-    await this.acquireLock(endpointType);
-
     try {
-      const response = await axios.request<T>(axiosConfig);
+      /**Rate Limits */
+      await this.rateLimit(axiosConfig.endpointType);
 
-      this.updateRateLimits(endpointType, response.headers);
+      const response = await axios.request<T>(axiosConfig);
+      this.updateRateLimits(axiosConfig.endpointType, response.headers);
 
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
-      console.log(err.response.data);
-    } finally {
-      this.releaseLock(endpointType);
-    }
-  }
 
-  private async acquireLock(endpoint: string): Promise<void> {
-    const rateLimit = this.getRateLimit(endpoint);
-    if (rateLimit && rateLimit.remaining === 0) {
-      const waitTime = rateLimit.resetTimestamp - Date.now();
-      if (waitTime > 0) {
-        await new Promise((resolve) => setTimeout(resolve, waitTime));
+      if (err.response.data) {
+        console.log(err, 'API ERROR');
+
+        if (err.status === 429) {
+          this.updateRateLimits(axiosConfig.endpointType, err.response.headers);
+          this.executeRequest(axiosConfig);
+        }
+      } else {
+        console.log(err, 'Error');
       }
     }
-    if (rateLimit?.remaining) rateLimit.remaining--;
   }
 
-  private releaseLock(endpoint: string): void {
-    const rateLimit = this.getRateLimit(endpoint);
-    if (rateLimit) {
-      rateLimit.remaining++;
+  private async rateLimit(endpointType: string) {
+    const limit: RateLimit = this.rateLimits.get(endpointType);
+
+    if (limit?.remaining === 0 && limit?.resetTimestamp) {
+      await this.queue(limit.resetTimestamp, limit.resetAfter * 1000);
     }
-    const endpointQueue = this.queue.get(endpoint);
-    if (endpointQueue && endpointQueue.length > 0) {
-      const nextRequest = endpointQueue.shift();
-      nextRequest?.();
-    }
+
+    return limit;
   }
 
-  private getRateLimit(endpoint: string): RateLimit | undefined {
-    return this.rateLimits.get(endpoint);
-  }
-
-  public updateRateLimits(endpoint: string, headers: any): void {
+  private updateRateLimits(endpointType: string, headers: any) {
     const limit = parseInt(headers['x-ratelimit-limit']);
     const remaining = parseInt(headers['x-ratelimit-remaining']);
     const resetTimestamp = parseInt(headers['x-ratelimit-reset']) * 1000;
-    const rateLimit: RateLimit = { endpoint, limit, remaining, resetTimestamp };
-    this.rateLimits.set(endpoint, rateLimit);
+    const resetAfter = parseInt(headers['x-ratelimit-reset-after']);
+    const rateLimit: RateLimit = {
+      limit,
+      remaining,
+      resetTimestamp,
+      resetAfter,
+    };
+
+    this.rateLimits.set(endpointType, rateLimit);
   }
 
-  public queueRequest(endpoint: string, request: () => void): void {
-    const endpointQueue = this.queue.get(endpoint);
-    if (endpointQueue) {
-      endpointQueue.push(request);
-    } else {
-      this.queue.set(endpoint, [request]);
-    }
+  private async queue(timestamp: number, ms: number) {
+    return new Promise((resolve) => {
+      const currentTimestamp = Date.now(); // Milliseconds
+
+      if (timestamp <= currentTimestamp) {
+        resolve(true);
+        return;
+      }
+
+      setTimeout(() => {
+        console.log('Queuing completed.');
+        resolve(true);
+      }, ms);
+    });
   }
 }

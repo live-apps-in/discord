@@ -1,12 +1,21 @@
 {
   "name": "@live-apps/discord",
   "version": "1.0.3",
-  "description": "Discord Client with shared cache, rate-limiting and de-duplication mechanism",
+  "description": "Discord Client with shared cache, rate-limiting and events de-duplication mechanism",
   "author": "Jaga <jagadheesh6@gmail.com>",
-  "main": "./dist/index.js",
-  "types": "./dist/index.d.ts",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "files": [
-    "dist/*"
+    "lib/**/*",
+    "CHANGELOG.md",
+    "LICENSE",
+    "package.json",
+    "README.md"
+  ],
+  "keywords": [
+    "typescript",
+    "discord",
+    "live-apps"
   ],
   "scripts": {
     "dev": "nodemon src/index.ts",
@@ -18,7 +27,6 @@
     "type": "git",
     "url": "git+https://github.com/live-apps-in/discord.git"
   },
-  "keywords": [],
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/live-apps-in/discord/issues"
