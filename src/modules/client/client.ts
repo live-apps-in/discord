@@ -18,6 +18,8 @@ import { Channel } from '../channel/channel';
 import { Bot } from '../bot/bot';
 import { MemberService } from '../member/service/member.service';
 import { Member } from '../member/member';
+import { User } from '../users/user';
+import { UserService } from '../users/service/user.service';
 
 ///Service
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -26,6 +28,7 @@ const messageService = container.get<MessageService>(TYPES.MessageService);
 const rolesService = container.get<RolesService>(TYPES.RolesService);
 const memberService = container.get<MemberService>(TYPES.MemberService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
+const userService = container.get<UserService>(TYPES.UserService);
 
 export class Client extends EventEmitter {
   /**Exposed to users */
@@ -35,6 +38,7 @@ export class Client extends EventEmitter {
   public message: Message;
   public roles: Roles;
   public bot: Bot;
+  public user: User;
 
   /**App config */
   private options: ClientOptions;
@@ -50,6 +54,7 @@ export class Client extends EventEmitter {
     this.message = new Message(messageService);
     this.roles = new Roles(rolesService);
     this.bot = new Bot();
+    this.user = new User(userService);
 
     /**App config */
     new RedisProvider().validate(this.options);

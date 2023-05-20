@@ -21,6 +21,7 @@ export const TYPES = {
   MessageAPI: Symbol.for('MessageAPI'),
   RolesAPI: Symbol.for('RolesAPI'),
   MemberAPI: Symbol.for('MemberAPI'),
+  UserAPI: Symbol.for('UserAPI'),
 
   /**Shared Service */
   AxiosService: Symbol.for('AxiosService'),

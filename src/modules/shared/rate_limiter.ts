@@ -15,20 +15,25 @@ export class DiscordRateLimiter {
 
   async executeRequest<T>(axiosConfig: IDiscordAxiosConfig): Promise<any> {
     try {
-      /**Rate Limits */
-      await this.rateLimit(axiosConfig.endpointType);
+      if (axiosConfig.endpointType) {
+        /**Rate Limits */
+        await this.rateLimit(axiosConfig.endpointType);
+      }
 
       const response = await axios.request<T>(axiosConfig);
-      this.updateRateLimits(axiosConfig.endpointType, response.headers);
+
+      if (axiosConfig.endpointType) {
+        this.updateRateLimits(axiosConfig.endpointType, response.headers);
+      }
 
       return response.data;
     } catch (error) {
       const err = error as AxiosError;
 
       if (err.response.data) {
-        console.log(err, 'API ERROR');
+        console.log(err.response, 'API ERROR');
 
-        if (err.status === 429) {
+        if (err.status === 429 && axiosConfig.endpointType) {
           this.updateRateLimits(axiosConfig.endpointType, err.response.headers);
           this.executeRequest(axiosConfig);
         }

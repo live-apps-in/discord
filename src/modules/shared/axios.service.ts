@@ -10,7 +10,7 @@ export interface IAxiosConfig {
 }
 
 export interface IDiscordAxiosConfig extends IAxiosConfig {
-  endpointType: string;
+  endpointType?: string;
 }
 
 @injectable()

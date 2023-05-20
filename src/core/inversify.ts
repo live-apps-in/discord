@@ -17,6 +17,7 @@ import { ChannelService } from '../modules/channel/service/channel.service';
 import { ChannelAPI } from '../api/discord/channel';
 import { MemberService } from '../modules/member/service/member.service';
 import { MemberAPI } from '../api/discord/member';
+import { UserAPI } from '../api/discord/user';
 
 const container = new Container();
 
@@ -37,6 +38,7 @@ container.bind<ChannelAPI>(TYPES.ChannelAPI).to(ChannelAPI);
 container.bind<MessageAPI>(TYPES.MessageAPI).to(MessageAPI);
 container.bind<RolesAPI>(TYPES.RolesAPI).to(RolesAPI);
 container.bind<MemberAPI>(TYPES.MemberAPI).to(MemberAPI);
+container.bind<UserAPI>(TYPES.UserAPI).to(UserAPI);
 
 /**Shared Service */
 container.bind<AxiosService>(TYPES.AxiosService).to(AxiosService);

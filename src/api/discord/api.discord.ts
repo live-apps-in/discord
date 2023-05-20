@@ -13,4 +13,8 @@ export abstract class DiscordBaseAPI {
   protected readonly authorization = (token: string) => {
     return `Bot ${token}`;
   };
+
+  protected readonly userAuthorization = (accessToken: string) => {
+    return `Bearer ${accessToken}`;
+  };
 }
