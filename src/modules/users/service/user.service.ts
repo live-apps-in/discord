@@ -15,6 +15,11 @@ export class UserService {
     return this.axiosService.discordRequest(apiConfig);
   }
 
+  async createChannel(recipient_id: string) {
+    const apiConfig = this.userAPI.createChannel(recipient_id);
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
   async guilds(accessToken: string) {
     const apiConfig = this.userAPI.guilds(accessToken);
     return this.axiosService.discordRequest(apiConfig);

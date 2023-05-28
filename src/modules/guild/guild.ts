@@ -40,12 +40,21 @@ export class Guild {
     const guild = await this.guildService.getGuildById(guildId);
 
     if (this.options.sync) {
-      await this.redisService.set(`cache:${guildId}`, JSON.stringify(guild));
+      await this.redisService.setWithExpiry(
+        `cache:${guildId}`,
+        JSON.stringify(guild),
+        600,
+      );
     } else {
       this.cachedGuildIds.add(guildId);
       this.cachedGuildData.set(guildId, guild);
     }
 
     return guild;
+  }
+
+  /**Fetch all Guilds */
+  async fetchAll(limit?: number) {
+    return this.guildService.getAllGuild(limit || 100);
   }
 }

@@ -43,7 +43,11 @@ export class Member {
     const guild = await this.memberService.getMemberById(guildId, memberId);
 
     if (clientOptions.sync) {
-      await this.redisService.set(`cache:${guildId}`, JSON.stringify(guild));
+      await this.redisService.setWithExpiry(
+        `cache:${guildId}`,
+        JSON.stringify(guild),
+        600,
+      );
     } else {
       this.cachedMemberIds.add(guildId);
       this.cachedMemberData.set(guildId, guild);

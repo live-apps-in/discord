@@ -14,4 +14,9 @@ export class GuildService {
     const apiConfig = this.guildAPI.getGuild(guildId);
     return this.axiosService.discordRequest(apiConfig);
   }
+
+  async getAllGuild(limit: number) {
+    const apiConfig = this.guildAPI.getAllGuild(limit);
+    return this.axiosService.discordRequest(apiConfig);
+  }
 }

@@ -54,7 +54,7 @@ export class Client extends EventEmitter {
     this.message = new Message(messageService);
     this.roles = new Roles(rolesService);
     this.bot = new Bot();
-    this.user = new User(userService);
+    this.user = new User(userService, messageService, redisService);
 
     /**App config */
     new RedisProvider().validate(this.options);
