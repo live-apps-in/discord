@@ -1,6 +1,6 @@
 {
   "name": "@live-apps/discord",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Discord Client with shared cache, rate-limiting and events de-duplication mechanism",
   "author": "Jaga <jagadheesh6@gmail.com>",
   "main": "./lib/index.js",
