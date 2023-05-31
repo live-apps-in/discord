@@ -1,11 +1,9 @@
 import { injectable } from 'inversify';
 import { RedisProvider } from './redis.provider';
-import { configStore } from '../../../shared/store/config.store';
-import { ClientOptions } from '../../client/interface/client.interface';
 
 @injectable()
 export class RedisService {
-  /**Loading Client - Find a reusable way */
+  /**Loading Redis client */
   private async client() {
     return await RedisProvider.getClient();
   }
@@ -38,12 +36,10 @@ export class RedisService {
    * Lock Mechanism
    */
   async hasEventProcessed(eventId: string): Promise<boolean> {
-    /**If sync is off assuming app is not scaled and allows events
-     * This also prevents app from crash if Redis not configured
+    /**
+     * We are dependent on Redis to check if the event has been acquired by another instance.
+     * This feature will be deprecated after finding a solution to load balance Discord events
      */
-    const { sync }: ClientOptions = configStore.clientOptions;
-    if (!sync) return false;
-
     const client = await this.client();
     if (await client.set(eventId, 'inProgress', 'EX', 2, 'NX')) return false;
 

@@ -1,5 +1,8 @@
-/**Built with Discord API v10
- * Author - Jaga
+/**
+ * Discord Embed Object
+ *
+ * @interface DiscordEmbeds
+ * @description Built with Discord API v10
  */
 export interface DiscordEmbeds {
   title?: string;
@@ -7,7 +10,7 @@ export interface DiscordEmbeds {
   description?: string;
   url?: string;
   timestamp?: string; // ISO8601 timestamp
-  color?: number; // color code of the embed
+  color?: number;
   footer?: DiscordEmbedFooter;
   image?: DiscordEmbedImage;
   thumbnail?: DiscordEmbedThumbnail;
@@ -18,46 +21,46 @@ export interface DiscordEmbeds {
 }
 
 interface DiscordEmbedFooter {
-  text: string; // footer text
-  icon_url?: string; // url of footer icon (only supports http(s) and attachments)
-  proxy_icon_url?: string; // a proxied url of footer icon
+  text: string;
+  icon_url?: string;
+  proxy_icon_url?: string;
 }
 
 interface DiscordEmbedThumbnail {
-  url: string; // source url of thumbnail (only supports http(s) and attachments)
-  proxy_url?: string; // a proxied url of the thumbnail
-  height?: number; // height of thumbnail
-  width?: number; // width of thumbnail
+  url: string;
+  proxy_url?: string;
+  height?: number;
+  width?: number;
 }
 
 interface DiscordEmbedVideo {
-  url?: string; // source url of video
-  proxy_url?: string; // a proxied url of the video
-  height?: number; // height of video
-  width?: number; // width of video
+  url?: string;
+  proxy_url?: string;
+  height?: number;
+  width?: number;
 }
 
 interface DiscordEmbedImage {
-  url: string; // source url of image (only supports http(s) and attachments)
-  proxy_url?: string; // a proxied url of the image
-  height?: number; // height of image
-  width?: number; // width of image
+  url: string;
+  proxy_url?: string;
+  height?: number;
+  width?: number;
 }
 
 interface DiscordEmbedProvider {
-  name?: string; // name of provider
-  url?: string; // url of provider
+  name?: string;
+  url?: string;
 }
 
 interface DiscordEmbedAuthor {
-  name: string; // name of author
-  url?: string; // url of author (only supports http(s))
-  icon_url?: string; // url of author icon (only supports http(s) and attachments)
-  proxy_icon_url?: string; // a proxied url of author icon
+  name: string;
+  url?: string;
+  icon_url?: string;
+  proxy_icon_url?: string;
 }
 
 interface DiscordEmbedField {
-  name: string; // name of the field
-  value: string; // value of the field
-  inline?: boolean; // whether or not this field should display inline
+  name: string;
+  value: string;
+  inline?: boolean;
 }

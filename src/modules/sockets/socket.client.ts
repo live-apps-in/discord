@@ -7,6 +7,16 @@ import { ClientOptions } from '../client/interface/client.interface';
 import { RedisService } from '../shared/redis/redis.service';
 import { inject } from 'inversify';
 import { DiscordEvents } from '../../shared/enum/events.enum';
+
+/**
+ * Handles socket connection and events for the Discord client.
+ *
+ * @class SocketClient
+ *
+ * @param {ClientOptions} options - The client options.
+ * @param {EventEmitter} emitter - The event emitter to propagate events.
+ * @param {RedisService} redisService - The Redis service for event processing.
+ */
 export class SocketClient {
   private discordClient: Client;
   private eventsHandler: EventsHandler;

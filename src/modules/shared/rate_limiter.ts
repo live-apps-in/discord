@@ -9,6 +9,11 @@ interface RateLimit {
   resetAfter: number;
 }
 
+/**
+ * Manages rate limiting for Discord API requests.
+ *
+ * @class DiscordRateLimiter
+ */
 @injectable()
 export class DiscordRateLimiter {
   private rateLimits: Map<string, RateLimit> = new Map();

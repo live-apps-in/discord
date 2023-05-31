@@ -30,6 +30,14 @@ const memberService = container.get<MemberService>(TYPES.MemberService);
 const redisService = container.get<RedisService>(TYPES.RedisService);
 const userService = container.get<UserService>(TYPES.UserService);
 
+/**
+ * LiveApps Discord client.
+ *
+ * @class Client
+ * @extends EventEmitter
+ *
+ * @param {ClientOptions} options - Discord Client config
+ */
 export class Client extends EventEmitter {
   /**Exposed to users */
   public guild: Guild;

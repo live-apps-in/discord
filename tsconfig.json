@@ -6,7 +6,7 @@
     "declaration": true,
     "sourceMap": true,
     "outDir": "./lib",
-    "removeComments": true,
+    "removeComments": false,
     "strict": false,
     "strictNullChecks": false,
     "strictFunctionTypes": true,

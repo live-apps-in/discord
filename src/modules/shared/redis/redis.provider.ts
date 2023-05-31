@@ -4,7 +4,6 @@ let client: Redis;
 
 export class RedisProvider {
   async validate(options: ClientOptions) {
-    if (!options.sync) return;
     await this.connect(options);
   }
 
