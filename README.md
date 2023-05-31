@@ -6,5 +6,5 @@ This package relies on `discord.js` npm package only for socket events and not f
 
 This npm package was developed specifically for the `kitty-chan-events` bot, which can be found at https://github.com/live-apps-in/kitty-chan-events.
 
-**Warning:**
+### Warning:
 Please note that the `@live-apps/discord` npm package does not currently support `local app cache`. It is fully dependent on Redis. We may add local app cache support if required for any of the features. If you want to use app cache for your Discord bot, you can try using the `discord.js` npm library, a powerful one on which this current library is built.
