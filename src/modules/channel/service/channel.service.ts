@@ -11,6 +11,11 @@ export class ChannelService {
     @inject(TYPES.AxiosService) private readonly axiosService: AxiosService,
   ) {}
 
+  async fetch(channelId: string) {
+    const apiConfig = this.channelAPI.fetch(channelId);
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
   async editChannel(channelId: string, payload: IEditChannel) {
     const apiConfig = this.channelAPI.editChannel(channelId, payload);
     return this.axiosService.discordRequest(apiConfig);

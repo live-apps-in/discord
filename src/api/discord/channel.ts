@@ -6,7 +6,20 @@ import { IEditChannel } from '../../modules/channel/interface/channel.interface'
 
 @injectable()
 export class ChannelAPI extends DiscordBaseAPI {
-  ///Edit Channel
+  /**Fetch channel */
+  fetch(channelId: string) {
+    return {
+      method: 'GET',
+      url: `${this.DISCORD_API}/channels/${channelId}`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      endpointType: `getChannel:{${channelId}}`,
+    } as IDiscordAxiosConfig;
+  }
+
+  /**Edit channel */
   editChannel(channelId: string, payload: IEditChannel) {
     return {
       method: 'PATCH',

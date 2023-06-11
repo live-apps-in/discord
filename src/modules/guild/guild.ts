@@ -17,6 +17,7 @@ export class Guild {
     ///Redis Cache
     if (!ignoreCache) {
       const redisCache = await this.redisService.get(`cache:${guildId}`);
+
       if (redisCache) {
         return JSON.parse(redisCache);
       }

@@ -57,7 +57,7 @@ export class Client extends EventEmitter {
     this.options = options;
     configStore.clientOptions = options;
     this.guild = new Guild(guildService, redisService);
-    this.channel = new Channel(channelService);
+    this.channel = new Channel(channelService, redisService);
     this.member = new Member(memberService, redisService);
     this.message = new Message(messageService);
     this.roles = new Roles(rolesService);
