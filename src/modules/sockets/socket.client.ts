@@ -115,7 +115,7 @@ export class SocketClient {
     /**Guild Member */
     if (options.events.includes(DiscordEvents.guildMemberAdd)) {
       this.discordClient.on('guildMemberAdd', async (member) => {
-        const eventId = `discord-events:${member.id}:${member.guild.id}`;
+        const eventId = `discord-events:${member.id}:${member.guild.id}:create`;
         if (await this.redisService.hasEventProcessed(eventId)) return;
 
         emitter.emit('guildMemberAdd', member);
@@ -124,10 +124,19 @@ export class SocketClient {
 
     if (options.events.includes(DiscordEvents.guildMemberRemove)) {
       this.discordClient.on('guildMemberRemove', async (member) => {
-        const eventId = `discord-events:${member.id}:${member.guild.id}`;
+        const eventId = `discord-events:${member.id}:${member.guild.id}:remove`;
         if (await this.redisService.hasEventProcessed(eventId)) return;
 
         emitter.emit('guildMemberRemove', member);
+      });
+    }
+
+    if (options.events.includes(DiscordEvents.guildMemberUpdate)) {
+      this.discordClient.on('guildMemberUpdate', async (member) => {
+        const eventId = `discord-events:${member.id}:${member.guild.id}:update`;
+        if (await this.redisService.hasEventProcessed(eventId)) return;
+
+        emitter.emit('guildMemberUpdate', member);
       });
     }
 

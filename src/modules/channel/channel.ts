@@ -18,7 +18,7 @@ export class Channel {
     ///Redis Cache
     if (!ignoreCache) {
       const redisCache = await this.redisService.get(`cache:${channelId}`);
-      
+
       if (redisCache) {
         return JSON.parse(redisCache);
       }

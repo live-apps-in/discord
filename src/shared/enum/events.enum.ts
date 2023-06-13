@@ -46,6 +46,11 @@ export enum DiscordEvents {
   guildMemberRemove = 'guildMemberRemove',
 
   /**
+   * Event triggered when a member leaves or is removed from a guild.
+   */
+  guildMemberUpdate = 'guildMemberUpdate',
+
+  /**
    * Event triggered for raw payload from the Discord gateway.
    */
   raw = 'raw',
