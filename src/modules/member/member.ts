@@ -21,8 +21,11 @@ export class Member {
       const redisCache = await this.redisService.get(
         `cache:${guildId}-${memberId}`,
       );
+
       if (redisCache) {
         return JSON.parse(redisCache);
+      } else if (options?.onlyCache) {
+        return null;
       }
     }
 

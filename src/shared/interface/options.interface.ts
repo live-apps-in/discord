@@ -8,4 +8,8 @@ export interface options {
    * Specifies whether to ignore cache or not.
    */
   ignoreCache?: boolean;
+  /**
+   * Only fetch cache
+   */
+  onlyCache?: boolean;
 }
