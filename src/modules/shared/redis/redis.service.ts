@@ -12,7 +12,7 @@ export class RedisService {
     client.set(key, value);
   }
 
-  async setWithExpiry(key: string, value: string, expiresAt: number) {
+  async setWithExpiry(key: string, value: string, expiresAt = 86400) {
     const client = await this.client();
     client.set(key, value, 'EX', expiresAt);
   }

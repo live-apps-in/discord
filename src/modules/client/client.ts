@@ -20,6 +20,11 @@ import { MemberService } from '../member/service/member.service';
 import { Member } from '../member/member';
 import { User } from '../users/user';
 import { UserService } from '../users/service/user.service';
+import {
+  Guild as DiscordGuild,
+  Message as DiscordMessage,
+  GuildMember as DiscordMember,
+} from 'discord.js';
 
 ///Service
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -67,5 +72,52 @@ export class Client extends EventEmitter {
     /**App config */
     new RedisProvider().validate(this.options);
     new SocketClient(options, this, redisService);
+  }
+
+  /**Discord Event Types */
+  public on(
+    event: 'guildCreate',
+    listener: (guild: DiscordGuild) => void,
+  ): this;
+  public on(
+    event: 'guildUpdate',
+    listener: (guild: DiscordGuild) => void,
+  ): this;
+  public on(
+    event: 'guildDelete',
+    listener: (guild: DiscordGuild) => void,
+  ): this;
+
+  public on(
+    event: 'messageCreate',
+    listener: (message: DiscordMessage) => void,
+  ): this;
+  public on(
+    event: 'messageUpdate',
+    listener: (message: DiscordMessage) => void,
+  ): this;
+  public on(
+    event: 'messageDelete',
+    listener: (message: DiscordMessage) => void,
+  ): this;
+
+  public on(
+    event: 'guildMemberAdd',
+    listener: (member: DiscordMember) => void,
+  ): this;
+  public on(
+    event: 'guildMemberUpdate',
+    listener: (member: DiscordMember) => void,
+  ): this;
+  public on(
+    event: 'guildMemberRemove',
+    listener: (member: DiscordMember) => void,
+  ): this;
+
+  public on(event: 'ready', listener: (event: any) => void): this;
+  public on(event: 'raw', listener: (event: any) => void): this;
+
+  public on(event: string, listener: (...args: any[]) => void): this {
+    return super.on(event, listener);
   }
 }

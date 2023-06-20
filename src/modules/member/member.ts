@@ -37,7 +37,7 @@ export class Member {
     await this.redisService.setWithExpiry(
       `cache:${guildId}-${memberId}`,
       JSON.stringify(guildMember),
-      600,
+      options.expiry,
     );
 
     return guildMember;
