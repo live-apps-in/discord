@@ -36,15 +36,18 @@ export class DiscordRateLimiter {
       const err = error as AxiosError;
 
       if (err.response.data) {
-        console.log(err.response, 'API ERROR');
-
         if (err.status === 429 && axiosConfig.endpointType) {
           this.updateRateLimits(axiosConfig.endpointType, err.response.headers);
           this.executeRequest(axiosConfig);
         }
-      } else {
-        console.log(err, 'Error');
       }
+
+      return {
+        error: {
+          status: err.response?.status,
+          data: err.response.data,
+        },
+      };
     }
   }
 

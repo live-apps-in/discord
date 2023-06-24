@@ -24,11 +24,12 @@ export class Guild {
     }
 
     const guild = await this.guildService.getGuildById(guildId);
+    if (guild.err) return guild;
 
     await this.redisService.setWithExpiry(
       `cache:${guildId}`,
       JSON.stringify(guild),
-      options.expiry,
+      options?.expiry,
     );
 
     return guild;

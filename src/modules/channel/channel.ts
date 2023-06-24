@@ -29,7 +29,7 @@ export class Channel {
     await this.redisService.setWithExpiry(
       `cache:${channelId}`,
       JSON.stringify(channel),
-      options.expiry,
+      options?.expiry,
     );
 
     return channel;
