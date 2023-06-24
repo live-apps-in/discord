@@ -42,11 +42,9 @@ export class DiscordRateLimiter {
         }
       }
 
-      return {
-        error: {
-          status: err.response?.status,
-          data: err.response.data,
-        },
+      throw {
+        status: err.response?.status,
+        data: err.response.data,
       };
     }
   }
