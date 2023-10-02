@@ -19,6 +19,19 @@ export class ChannelAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
+  /**Fetch All channels */
+  fetchAll(guildId: string) {
+    return {
+      method: 'GET',
+      url: `${this.DISCORD_API}/guilds/${guildId}/channels`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      endpointType: `getAllChannels:{${guildId}}`,
+    } as IDiscordAxiosConfig;
+  }
+
   /**Edit channel */
   editChannel(channelId: string, payload: IEditChannel) {
     return {

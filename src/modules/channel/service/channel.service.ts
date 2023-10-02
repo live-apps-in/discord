@@ -16,6 +16,11 @@ export class ChannelService {
     return this.axiosService.discordRequest(apiConfig);
   }
 
+  async fetchByGuildId(guildId: string) {
+    const apiConfig = this.channelAPI.fetchAll(guildId);
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
   async editChannel(channelId: string, payload: IEditChannel) {
     const apiConfig = this.channelAPI.editChannel(channelId, payload);
     return this.axiosService.discordRequest(apiConfig);

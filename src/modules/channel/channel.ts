@@ -35,6 +35,31 @@ export class Channel {
     return channel;
   }
 
+  async fetchAll(guildId: string, options?: options) {
+    const ignoreCache = options?.ignoreCache;
+
+    ///Redis Cache
+    if (!ignoreCache) {
+      const redisCache = await this.redisService.get(
+        `cache:guild-${guildId}:channels`,
+      );
+
+      if (redisCache) {
+        return JSON.parse(redisCache);
+      }
+    }
+
+    const channels = await this.channelService.fetchByGuildId(guildId);
+
+    await this.redisService.setWithExpiry(
+      `cache:guild-${guildId}:channels`,
+      JSON.stringify(channels),
+      options?.expiry,
+    );
+
+    return channels;
+  }
+
   async edit(channelId: string, payload: IEditChannel) {
     return this.channelService.editChannel(channelId, payload);
   }
