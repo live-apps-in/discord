@@ -37,6 +37,7 @@ export class SocketClient {
         GatewayIntentBits.GuildMessages,
         GatewayIntentBits.MessageContent,
         GatewayIntentBits.GuildMessageReactions,
+        GatewayIntentBits.GuildPresences,
       ],
     });
 
@@ -52,6 +53,13 @@ export class SocketClient {
     if (options.events.includes(DiscordEvents.raw)) {
       this.discordClient.on('raw', (event) => {
         emitter.emit('raw', event);
+      });
+    }
+
+    /**Presence Update */
+    if (options.events.includes(DiscordEvents.presenceUpdate)) {
+      this.discordClient.on('presenceUpdate', (oldPresence, newPresence) => {
+        emitter.emit('presenceUpdate', { oldPresence, newPresence });
       });
     }
 

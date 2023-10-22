@@ -51,6 +51,11 @@ export enum DiscordEvents {
   guildMemberUpdate = 'guildMemberUpdate',
 
   /**
+   * Event triggered when presence is updated.
+   */
+  presenceUpdate = 'presenceUpdate',
+
+  /**
    * Event triggered for raw payload from the Discord gateway.
    */
   raw = 'raw',

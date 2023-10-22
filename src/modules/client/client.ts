@@ -25,6 +25,7 @@ import {
   Message as DiscordMessage,
   GuildMember as DiscordMember,
 } from 'discord.js';
+import { DiscordPresence } from './interface/discord_presence';
 
 ///Service
 const guildService = container.get<GuildService>(TYPES.GuildService);
@@ -114,6 +115,10 @@ export class Client extends EventEmitter {
     listener: (member: DiscordMember) => void,
   ): this;
 
+  public on(
+    event: 'presenceUpdate',
+    listener: (event: DiscordPresence) => void,
+  ): this;
   public on(event: 'ready', listener: (event: any) => void): this;
   public on(event: 'raw', listener: (event: any) => void): this;
 
