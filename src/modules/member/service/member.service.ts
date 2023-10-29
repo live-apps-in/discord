@@ -12,6 +12,7 @@ export class MemberService {
 
   async getMemberById(guildId: string, memberId: string) {
     const apiConfig = this.memberAPI.findById(guildId, memberId);
+
     return this.axiosService.discordRequest(apiConfig);
   }
 }

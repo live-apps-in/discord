@@ -19,11 +19,13 @@ export class RedisService {
 
   async get(key: string) {
     const client = await this.client();
+
     return client.get(key);
   }
 
   async exists(key: string) {
     const client = await this.client();
+
     return client.exists(key);
   }
 

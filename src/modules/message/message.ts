@@ -39,6 +39,11 @@ export class Message {
     );
   }
 
+  /**Edit plain message */
+  async edit(channelId: string, messageId: string, content: string) {
+    return this.messageService.editMessage(channelId, messageId, content);
+  }
+
   /**Edit Embed */
   async editEmbed(
     channelId: string,

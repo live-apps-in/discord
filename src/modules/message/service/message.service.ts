@@ -17,6 +17,7 @@ export class MessageService {
     const apiConfig = this.messageAPI.sendMessage(channelId, {
       content: message,
     });
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
@@ -24,6 +25,7 @@ export class MessageService {
     const apiConfig = this.messageAPI.sendMessage(channelId, {
       embeds,
     });
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
@@ -34,6 +36,7 @@ export class MessageService {
         message_id: messageId,
       },
     });
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
@@ -47,10 +50,19 @@ export class MessageService {
       messageId,
       payload,
     );
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
   /**Message Patch */
+  async editMessage(channelId: string, messageId: string, content: string) {
+    const apiConfig = this.messageAPI.editMessage(channelId, messageId, {
+      content,
+    });
+
+    return this.axiosService.discordRequest(apiConfig);
+  }
+  /**Embed Message Patch */
   async editEmbed(
     channelId: string,
     messageId: string,
@@ -59,6 +71,7 @@ export class MessageService {
     const apiConfig = this.messageAPI.editMessage(channelId, messageId, {
       embeds,
     });
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
@@ -74,12 +87,14 @@ export class MessageService {
       messageId,
       reaction,
     );
+
     return this.axiosService.discordRequest(apiConfig);
   }
 
   /**Message Delete */
   async deleteMessage(channelId: string, messageId: string) {
     const apiConfig = this.messageAPI.deleteMessage(channelId, messageId);
+
     return this.axiosService.discordRequest(apiConfig);
   }
 }

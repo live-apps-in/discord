@@ -23,6 +23,7 @@ export class AxiosService {
 
   async call(axiosConfig: IAxiosConfig) {
     let resData: any;
+
     await axios(axiosConfig)
       .then((res) => {
         resData = res.data;
@@ -30,6 +31,7 @@ export class AxiosService {
       .catch((err) => {
         console.log(err.message);
       });
+
     return resData;
   }
 

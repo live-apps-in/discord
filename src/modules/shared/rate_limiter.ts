@@ -84,7 +84,6 @@ export class DiscordRateLimiter {
       }
 
       setTimeout(() => {
-        console.log('Queuing completed.');
         resolve(true);
       }, ms);
     });
