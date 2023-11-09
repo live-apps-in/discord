@@ -6,7 +6,7 @@ import { ICreateThread } from '../../modules/message/interface/messages.interfac
 
 @injectable()
 export class MessageAPI extends DiscordBaseAPI {
-  ///Send Message to a channel
+  /** Send Message to a channel */
   sendMessage(channelId: string, body: any) {
     return {
       method: 'POST',
@@ -20,7 +20,7 @@ export class MessageAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
-  ///Reply to a message with plain message
+  /** Reply to a message with plain message */
   replyMessage(channelId: string, body: any) {
     return {
       method: 'POST',
@@ -34,7 +34,7 @@ export class MessageAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
-  ///Create message from thread
+  /** Create message from thread */
   createThread(channelId: string, messageId: string, payload: ICreateThread) {
     return {
       method: 'POST',
@@ -48,7 +48,7 @@ export class MessageAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
-  ///Edit a message
+  /** Edit a message */
   editMessage(channelId: string, messageId: string, body: any) {
     return {
       method: 'PATCH',
@@ -62,7 +62,7 @@ export class MessageAPI extends DiscordBaseAPI {
     } as IDiscordAxiosConfig;
   }
 
-  ///React to a message
+  /** React to a message */
   messageReact(channelId: string, messageId: string, reaction: string) {
     return {
       method: 'PUT',
@@ -74,11 +74,31 @@ export class MessageAPI extends DiscordBaseAPI {
       data: {
         emoji: reaction,
       },
-      endpointType: `channelReactMessage:{${channelId}}`,
+      endpointType: `channelMessageReaction:{${channelId}}`,
     } as IDiscordAxiosConfig;
   }
 
-  ///Delete a message in a channel
+  /** Remove message reaction */
+  removeMessageReaction(
+    channelId: string,
+    messageId: string,
+    reaction: string,
+  ) {
+    return {
+      method: 'DELETE',
+      url: `${this.DISCORD_API}/channels/${channelId}/messages/${messageId}/reactions/${reaction}/@me`,
+      headers: {
+        Authorization: this.authorization(configStore.clientOptions.token),
+        ...this.headers,
+      },
+      data: {
+        emoji: reaction,
+      },
+      endpointType: `channelMessageReactionRemove:{${channelId}}`,
+    } as IDiscordAxiosConfig;
+  }
+
+  /** Delete a message in a channel */
   deleteMessage(channelId: string, messageId: string) {
     return {
       method: 'DELETE',

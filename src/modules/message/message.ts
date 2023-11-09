@@ -58,6 +58,15 @@ export class Message {
     return this.messageService.messageReact(channelId, messageId, reaction);
   }
 
+  /**Remove message reaction */
+  async removeReaction(channelId: string, messageId: string, reaction: string) {
+    return this.messageService.messageReactionRemove(
+      channelId,
+      messageId,
+      reaction,
+    );
+  }
+
   /**Delete message */
   async delete(channelId: string, messageId: string) {
     return this.messageService.deleteMessage(channelId, messageId);

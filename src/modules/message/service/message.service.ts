@@ -62,6 +62,7 @@ export class MessageService {
 
     return this.axiosService.discordRequest(apiConfig);
   }
+
   /**Embed Message Patch */
   async editEmbed(
     channelId: string,
@@ -83,6 +84,26 @@ export class MessageService {
     }
 
     const apiConfig = this.messageAPI.messageReact(
+      channelId,
+      messageId,
+      reaction,
+    );
+
+    return this.axiosService.discordRequest(apiConfig);
+  }
+
+  /**REact to a message */
+  async messageReactionRemove(
+    channelId: string,
+    messageId: string,
+    reaction: string,
+  ) {
+    //Check and decode emoji if not already done
+    if (reaction === decodeURIComponent(reaction)) {
+      reaction = encodeURIComponent(reaction);
+    }
+
+    const apiConfig = this.messageAPI.removeMessageReaction(
       channelId,
       messageId,
       reaction,
