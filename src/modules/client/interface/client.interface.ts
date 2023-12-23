@@ -12,4 +12,6 @@ interface IRedisOptions {
   port: number;
   db: number;
   pass?: string;
+  maxRetires?: number;
+  retryInterval?: number;
 }

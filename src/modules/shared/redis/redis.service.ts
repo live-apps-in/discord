@@ -5,7 +5,7 @@ import { RedisProvider } from './redis.provider';
 export class RedisService {
   /**Loading Redis client */
   private async client() {
-    return await RedisProvider.getClient();
+    return RedisProvider.getClient();
   }
   async set(key: string, value: string) {
     const client = await this.client();

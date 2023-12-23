@@ -14,9 +14,10 @@ export class RedisProvider {
       port: redisOptions.port,
       password: redisOptions.pass,
       db: redisOptions.db,
-      retryStrategy: () => {
-        return null;
-      },
+      retryStrategy: redisRetryStrategy(
+        redisOptions.maxRetires || 10,
+        redisOptions.retryInterval || 5000,
+      ),
     });
 
     client.on('connect', () => {
@@ -31,4 +32,21 @@ export class RedisProvider {
   public static getClient() {
     return client;
   }
+}
+
+function redisRetryStrategy(maxRetries: number, interval: number) {
+  let retryCount = 0;
+
+  return () => {
+    if (retryCount < maxRetries) {
+      retryCount += 1;
+      console.log(
+        `🟡 LiveApps Discord Redis - Retry attempt ${retryCount} in ${
+          interval / 1000
+        } seconds...`,
+      );
+      return interval;
+    }
+    return null;
+  };
 }
